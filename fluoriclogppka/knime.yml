@@ -1,0 +1,12 @@
+name: fluoriclogppka # Will be concatenated with the group_id to an ID
+author: blackthorn.ai
+env_yml_path: C:/work/DrugDiscovery/fluoricLogPpKa_KNIME_PYTHON_NODE/github_repository/fluoricLogPpKa_KNIME/my_conda_env.yml # This is necessary for bundling, but not needed during development
+extension_module: my_extension # The .py Python module containing the nodes of your extension
+description: Tool for pKa, logP prediction # Human readable bundle name / description
+long_description: Tool for pKa, logP prediction using SMILES representation of the molecule, that uses AI to predict logP and pKa value.
+group_id: org.template
+version: 0.1.0 # Version of this Python node extension
+vendor: blackthorn.ai
+license_file: LICENSE.TXT # Best practice: put your LICENSE.TXT next to the knime.yml; otherwise you would need to change to path/to/LICENSE.txt
+feature_dependencies:
+  - org.knime.features.chem.types
