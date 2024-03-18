@@ -1,5 +1,8 @@
 name: fluoriclogppka # Will be concatenated with the group_id to an ID
-author: blackthorn.ai
+author: 
+  - PetroPavliukk
+  - ogurbych
+  - DkraAI
 env_yml_path: C:/work/DrugDiscovery/fluoricLogPpKa_KNIME_PYTHON_NODE/github_repository/fluoricLogPpKa_KNIME/my_conda_env.yml # This is necessary for bundling, but not needed during development
 extension_module: my_extension # The .py Python module containing the nodes of your extension
 description: Tool for pKa, logP prediction # Human readable bundle name / description
