@@ -2,14 +2,11 @@ import logging
 import math
 
 import pandas as pd
-import fluoriclogppka
-import knime
 import knime.extension as knext
 
 from utils import predict_logP, predict_pKa
 
 LOGGER = logging.getLogger(__name__)
-
 
 @knext.node(name="Fluoriclogppka Node", node_type=knext.NodeType.LEARNER, icon_path="icon.png", category="/")
 @knext.input_table(name="Input SMILES Data", description="Table with SMILES in 'string' of 'SMI' format")
