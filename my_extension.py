@@ -55,7 +55,6 @@ class Fluoricpka:
     """
 
     def configure(self, configure_context, input_schema_1):
-        
         input_schema_1 = input_schema_1.append(knext.Column(knext.double(), "pKa"))
 
         return input_schema_1
