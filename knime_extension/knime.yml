@@ -1,8 +1,8 @@
 name: chem-ai # Will be concatenated with the group_id to an ID
 author: 
-  - PetroPavliukk
-  - ogurbych
-  - DkraAI
+  - ppav (ppav@blackthorn.ai)
+  - ogurbych (alex@blackthorn.ai)
+  - redman (dkra@blackthorn.ai)
 env_yml_path: my_conda_env.yml # This is necessary for bundling, but not needed during development
 extension_module: src/my_extension # The .py Python module containing the nodes of your extension
 description: Chem AI # Human readable bundle name / description
