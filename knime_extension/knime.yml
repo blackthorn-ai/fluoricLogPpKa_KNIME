@@ -1,4 +1,4 @@
-name: fluoriclogppka # Will be concatenated with the group_id to an ID
+name: chem-ai # Will be concatenated with the group_id to an ID
 author: 
   - PetroPavliukk
   - ogurbych
@@ -7,7 +7,7 @@ env_yml_path: my_conda_env.yml # This is necessary for bundling, but not needed 
 extension_module: src/my_extension # The .py Python module containing the nodes of your extension
 description: Chem AI # Human readable bundle name / description
 long_description: AI tool for predicting chemical properties.
-group_id: org.template
+group_id: ai.blackthorn
 version: 0.1.0 # Version of this Python node extension
 vendor: blackthorn.ai
 license_file: LICENSE.TXT # Best practice: put your LICENSE.TXT next to the knime.yml; otherwise you would need to change to path/to/LICENSE.txt
