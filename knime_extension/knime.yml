@@ -5,8 +5,8 @@ author:
   - DkraAI
 env_yml_path: my_conda_env.yml # This is necessary for bundling, but not needed during development
 extension_module: src/my_extension # The .py Python module containing the nodes of your extension
-description: ChemBioAI Predictor # Human readable bundle name / description
-long_description: Tool for pKa, logP prediction using SMILES representation of the molecule, that uses AI to predict logP and pKa value.
+description: Chem AI # Human readable bundle name / description
+long_description: AI tool for predicting chemical properties.
 group_id: org.template
 version: 0.1.0 # Version of this Python node extension
 vendor: blackthorn.ai
