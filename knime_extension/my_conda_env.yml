@@ -1,0 +1,10 @@
+name: knime_env
+channels:
+  - knime
+  - conda-forge
+dependencies:
+  - python=3.11
+  - knime-extension
+  - knime-python-base
+  - pip:
+    - fluoriclogppka
