@@ -27,17 +27,25 @@ class Fluoricpka:
     def execute(self, exec_context, input_1):
         input_pandas = input_1.to_pandas()
 
-        predicted_logPs = []
+        if "SMILES" not in input_pandas.columns:
+            LOGGER.error(f"SMILES column is not represented in the input table.")
+            raise ValueError("The table does not contain the column 'SMILES'.")
+
         predicted_pKas = []
         for _, row in input_pandas.iterrows():
             if pd.isnull(row['SMILES']):
-                raise ValueError("SMILES cannot be NaN")
+                LOGGER.error(f"SMILES value cannot be NaN.")
+                raise ValueError("SMILES cannot be NaN.")
 
             SMILES = row['SMILES']
 
-            predicted_pKa = predict_pKa(SMILES=SMILES)
-            predicted_pKas.append(predicted_pKa)
+            try:
+                predicted_pKa = predict_pKa(SMILES=SMILES)
+            except Exception as e:
+                LOGGER.error(f"Error predicting pKa for SMILES '{SMILES}': {str(e)}")
+                raise ValueError(f"Inappropriate SMILES format: {SMILES}")
 
+            predicted_pKas.append(predicted_pKa)
 
         output_df = pd.DataFrame({
             'SMILES': input_pandas['SMILES'],
