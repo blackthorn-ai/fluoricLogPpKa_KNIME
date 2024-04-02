@@ -1,28 +1,23 @@
 import logging
-import math
-import time
 
 import pandas as pd
 import knime.extension as knext
 
+from categories import fluoric_category
 from utils.fluoriclogpka_utils import predict_pKa
 from exceptions.fluoriclogppka_exceptions import InvalidSettingsException
 
 LOGGER = logging.getLogger(__name__)
 
-category = knext.category("/community", 
-                          "fluoric", 
-                          "Fluoric", 
-                          "Category from predicting chemical properties in fluoric molecules", 
-                          icon="icons/chem_icon.png")
-
-@knext.node(name="Fluoric pKa", node_type=knext.NodeType.LEARNER, icon_path="icons/chem_icon.png", category=category)
-@knext.input_port(name="Input Data", description="Table with SMILES in 'string' of 'SMI' format or SDF mol file", port_type=knext.PortType.TABLE)
+@knext.node(name="Fluorine pKa", node_type=knext.NodeType.LEARNER, icon_path="icons/chem_icon.png", category=fluoric_category)
+@knext.input_port(name="Input SMILES Data", description="Table with SMILES in 'string' of 'SMI' format", port_type=knext.PortType.TABLE)
 @knext.output_table(name="Output Data", description="Table with predicted pKa values")
 class Fluoricpka:
     """Node for predicting pKa using molecules SMILES.
-    For predicting are used a lot of generated molecule features, such as dihedral angle, molecular weight and volume, amount of Carbon atoms etc.
-    All this molecule features used for predicting pKa values using H2O models.
+    
+    For predicting are used a lot of generated molecule features using the most important and not correlated features from mordred (partial positive surface area, partial negative surface area, number of fluorine or carbon atoms etc.), 
+    rdkit (number of cycles, chiral centers etc) and custom calculation (dihedral angle, molecular weight and volume, dipole moment, sasa, functional group freedom etc).
+    All this molecule features used for predicting pKa values using ML models.
     """
     class ExecutionTimeOptions(knext.EnumParameterOptions):
         FAST = ("Fast/Inaccurate", "Generates less conformers for feature generation. Results in faster prediction, but with less accurate results.")
@@ -71,26 +66,23 @@ class Fluoricpka:
         has_smiles_column = any(column == self.smiles_column_name for column in input_1.column_names)
         if not has_smiles_column:
             LOGGER.error(f"{self.smiles_column_name} column is not represented in the input table.")
-            raise InvalidSettingsException(f"Input schema does not contain the '{self.smiles_column_name}' column")
+            raise InvalidSettingsException(f"Input schema does not contain the '{self.smiles_column_name}' column. Please specify the column that contains SMILES.")
 
         SMILES_array = input_pandas[self.smiles_column_name]
         
         total_number_of_operations = len(SMILES_array) * 2
         
         predicted_pKas = []
-        start_time = time.time()
         for index, SMILES in enumerate(SMILES_array):
             if pd.isnull(SMILES):
                 LOGGER.error(f"SMILES value cannot be NaN.")
                 raise ValueError("SMILES cannot be NaN.")
 
             try:
-                LOGGER.info(f"Exec mode: {is_fast_mode}")
-
                 predicted_pKa = predict_pKa(SMILES=SMILES,
                                             is_fast_mode=is_fast_mode,
                                             execution_context=exec_context,
-                                            index=index,
+                                            index=index * 2,
                                             total_number_of_operations=total_number_of_operations)
                 
             except Exception as e:
@@ -101,8 +93,5 @@ class Fluoricpka:
 
         output_df = input_pandas.copy()
         output_df['pKa'] = predicted_pKas
-
-        end_time = time.time()
-        LOGGER.info(f"Prediction time: {end_time - start_time}")
         
         return knext.Table.from_pandas(output_df)
