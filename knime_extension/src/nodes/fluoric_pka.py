@@ -51,6 +51,17 @@ class Fluoricpka:
     def execute(self, exec_context, input_1):
         input_pandas = input_1.to_pandas()
 
+        self.smiles_column_name = self.selected_SMILES_col
+        if self.smiles_column_name is None:
+            LOGGER.error(f"No column is selected.")
+            raise InvalidSettingsException(f"Please specify a column.")
+
+        selected_column_type = str(input_pandas.dtypes[self.selected_SMILES_col])
+        is_smiles_column = "smiles" in selected_column_type.lower()
+        if not is_smiles_column:
+            LOGGER.error(f"Invalid SMILES column.")
+            raise ValueError(f"The input data type is {selected_column_type} instead of SMILES. Please type cast.")
+
         LOGGER.info(f"Execution mode: {self.execution_mode}.")
 
         is_fast_mode = False
@@ -58,15 +69,7 @@ class Fluoricpka:
             LOGGER.info(f"FAST mode lauched.")
             is_fast_mode = True
 
-        if self.selected_SMILES_col != None:
-            self.smiles_column_name = self.selected_SMILES_col
-
         LOGGER.info(f"SMILES column name: {self.smiles_column_name}, selected column name: {self.selected_SMILES_col}")
-
-        has_smiles_column = any(column == self.smiles_column_name for column in input_1.column_names)
-        if not has_smiles_column:
-            LOGGER.error(f"{self.smiles_column_name} column is not represented in the input table.")
-            raise InvalidSettingsException(f"Input schema does not contain the '{self.smiles_column_name}' column. Please specify the column that contains SMILES.")
 
         SMILES_array = input_pandas[self.smiles_column_name]
         
@@ -74,20 +77,22 @@ class Fluoricpka:
         
         predicted_pKas = []
         for index, SMILES in enumerate(SMILES_array):
+            predicted_pKa = None
             if pd.isnull(SMILES):
-                LOGGER.error(f"SMILES value cannot be NaN.")
-                raise ValueError("SMILES cannot be NaN.")
-
-            try:
-                predicted_pKa = predict_pKa(SMILES=SMILES,
-                                            is_fast_mode=is_fast_mode,
-                                            execution_context=exec_context,
-                                            index=index * 2,
-                                            total_number_of_operations=total_number_of_operations)
-                
-            except Exception as e:
-                LOGGER.error(f"Error predicting pKa for SMILES '{SMILES}': {str(e)}")
-                raise ValueError(f"Inappropriate SMILES format: {SMILES}")
+                LOGGER.warning(f"Empty cell.")
+                continue
+            else:
+                try:
+                    predicted_pKa = predict_pKa(
+                        SMILES=SMILES,
+                        is_fast_mode=is_fast_mode,
+                        execution_context=exec_context,
+                        index=index * 2,
+                        total_number_of_operations=total_number_of_operations
+                    )
+                except Exception as e:
+                    LOGGER.error(f"Error predicting pKa for SMILES '{SMILES}': {str(e)}")
+                    raise ValueError(f"Inappropriate SMILES format: {SMILES}")
 
             predicted_pKas.append(predicted_pKa)
 
