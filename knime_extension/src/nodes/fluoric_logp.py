@@ -80,7 +80,6 @@ class Fluoriclogp:
             predicted_logP = None
             if pd.isnull(SMILES):
                 LOGGER.warning(f"Empty cell.")
-                continue
             else:
                 try:
                     predicted_logP = predict_logP(

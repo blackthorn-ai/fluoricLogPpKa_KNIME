@@ -80,7 +80,6 @@ class Fluoricpka:
             predicted_pKa = None
             if pd.isnull(SMILES):
                 LOGGER.warning(f"Empty cell.")
-                continue
             else:
                 try:
                     predicted_pKa = predict_pKa(
