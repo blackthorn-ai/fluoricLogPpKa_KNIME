@@ -2,6 +2,7 @@ name: knime_env
 channels:
   - knime
   - conda-forge
+  - dglteam
 dependencies:
   - python=3.11
   - knime-extension
