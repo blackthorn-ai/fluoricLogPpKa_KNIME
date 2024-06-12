@@ -3,7 +3,11 @@ author:
   - ppav (ppav@blackthorn.ai)
   - ogurbych (alex@blackthorn.ai)
   - redman (dkra@blackthorn.ai)
-env_yml_path: my_conda_env.yml # This is necessary for bundling, but not needed during development
+env_yml_path:
+  osx-arm64: my_conda_arm_env.yml
+  osx-64: my_conda_env.yml
+  linux-64: my_conda_env.yml
+  win-64: my_conda_env.yml
 extension_module: src/my_extension # The .py Python module containing the nodes of your extension
 description: Chem AI # Human readable bundle name / description
 long_description: AI tool for predicting chemical properties.
