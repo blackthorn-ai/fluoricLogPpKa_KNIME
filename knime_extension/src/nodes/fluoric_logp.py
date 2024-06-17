@@ -15,19 +15,19 @@ LOGGER = logging.getLogger(__name__)
 class Fluoriclogp:
     """Node for predicting logP using molecules SMILES.
     
-    For predicting are used a lot of generated molecule features using the most important and not correlated features from mordred (partial positive surface area, partial negative surface area, number of fluorine or carbon atoms etc.), 
-    rdkit (number of cycles, chiral centers etc) and custom calculation (dihedral angle, molecular weight and volume, dipole moment, sasa, functional group freedom etc).
+    For predicting are used a lot of generated molecule features using the most important and not correlated features from mordred (partial positive surface area, 
+    partial negative surface area, number of fluorine or carbon atoms etc.), rdkit (number of cycles, chiral centers etc) and 
+    custom calculation (dihedral angle, molecular weight and volume, dipole moment, sasa, functional group freedom etc).
     All this molecule features used for predicting logP values using ML models.
     """
     class ExecutionTimeOptions(knext.EnumParameterOptions):
         FAST = ("Fast/Inaccurate", "Generates less conformers for feature generation. Results in faster prediction, but with less accurate results.")
         SLOW = ("Slow/Accurate", "Generates 3^(number of double bonds) conformers for feature generation. Results in slower prediction, but better accurate results.")
-        EXPERIMENTAL = ("Experimental - Fast/Accurate", "Graph neural network with features that are generated very quickly is used for prediction. The results are even better than other modes.")
     
     execution_mode = knext.EnumParameter(
         "Execution time",
         "How to execute feature generation.",
-        ExecutionTimeOptions.EXPERIMENTAL.name,
+        ExecutionTimeOptions.FAST.name,
         ExecutionTimeOptions,
     )
 
@@ -66,12 +66,9 @@ class Fluoriclogp:
         LOGGER.info(f"Execution mode: {self.execution_mode}.")
 
         is_fast_mode = False
-        model_name = "h2o"
         if self.ExecutionTimeOptions.FAST.name == self.execution_mode:
             LOGGER.info(f"FAST mode lauched.")
             is_fast_mode = True
-        if self.ExecutionTimeOptions.EXPERIMENTAL.name == self.execution_mode:
-            model_name = "gnn"
 
         LOGGER.info(f"SMILES column name: {self.smiles_column_name}, selected column name: {self.selected_SMILES_col}")
 
@@ -89,7 +86,6 @@ class Fluoriclogp:
                     predicted_logP = predict_logP(
                         SMILES=SMILES,
                         is_fast_mode=is_fast_mode,
-                        model_name=model_name,
                         execution_context=exec_context,
                         index=index * 2,
                         total_number_of_operations=total_number_of_operations

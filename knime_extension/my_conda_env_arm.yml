@@ -12,5 +12,4 @@ dependencies:
   - cpuonly
   - pytorch ==2.0.0
   - pip:
-    - dgl ==2.1.0
-    - fluoriclogppka >=0.2.6,<0.2.7
+    - fluoriclogppka >=0.2.1,<0.2.2
