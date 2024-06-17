@@ -1,7 +1,6 @@
 name: knime_env
 channels:
   - pytorch
-  - dglteam
   - conda-forge
   - knime
 dependencies:
@@ -12,7 +11,5 @@ dependencies:
   - pyyaml=6.0.1
   - cpuonly
   - pytorch ==2.0.0
-  - dgl ==2.1.0
   - pip:
-    # - dgl ==2.1.0
-    - fluoriclogppka >=0.2.6,<0.2.7
+    - fluoriclogppka >=0.2.1,<0.2.2
