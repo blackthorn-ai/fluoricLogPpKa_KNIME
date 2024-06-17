@@ -1,0 +1,14 @@
+name: knime_env
+channels:
+  - conda-forge
+  - knime
+dependencies:
+  - python=3.11
+  - knime-python-base>=5.2 
+  - knime-extension>=5.2
+  - pydantic=2.5.3
+  - pyyaml=6.0.1
+  - pip:
+    - torch ==2.0.0
+    - dgl ==2.1.0
+    - fluoriclogppka >=0.2.6,<0.2.7
