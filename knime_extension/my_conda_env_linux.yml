@@ -16,5 +16,7 @@ dependencies:
   - packaging
   - cpuonly
   - pytorch ==2.0.0
+  - dgl ==1.1.2
   - pip:
-    - fluoriclogppka >=0.2.1,<0.2.2
+    # - dgl ==2.1.0
+    - fluoriclogppka >=0.2.7,<0.2.8

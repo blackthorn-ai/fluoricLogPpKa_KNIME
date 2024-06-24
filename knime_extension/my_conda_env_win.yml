@@ -15,5 +15,6 @@ dependencies:
   - packaging
   - pip:
     - torch ==2.0.0
-    - fluoriclogppka >=0.2.1,<0.2.2
+    - dgl ==1.1.2
+    - fluoriclogppka >=0.2.7,<0.2.8
     
