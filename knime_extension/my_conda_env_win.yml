@@ -4,15 +4,10 @@ channels:
   - knime
 dependencies:
   - python=3.11
+  - knime-python-base>=5.2
   - knime-extension>=5.2
   - pydantic=2.5.3
   - pyyaml=6.0.1
-  - py4j
-  - nomkl
-  - pandas
-  - pyarrow =15.0.0
-  - numpy >=1.22
-  - packaging
   - pip:
     - torch ==2.0.0
     - dgl ==1.1.2
